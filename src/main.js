@@ -5,27 +5,42 @@ let points = [];
 function setup() {
     createCanvas(400, 400);
 
-    for(let i = -1; i <= 1; i++) {
+    /*for(let i = -1; i <= 1; i++) { // 3d cube points
         for(let j = -1; j<= 1; j++) {
             for(let k = -1; k<= 1; k++) {
                 if(i*j*k == 0) continue;
                 points.push(new Vector(i,j,k));
             }
         }
+    }*/
+
+    for(let i = -1; i <= 1; i++) { // 4d cube points
+        for(let j = -1; j<= 1; j++) {
+            for(let k = -1; k<= 1; k++) {
+                for(let l = -1; l<= 1; l++) {
+                    if(i*j*k*l == 0) continue;
+                    points.push(new Vector(i,j,k,l));
+                }
+            }
+        }
     }
 }
 
-let r = [];
-let projected = [];
+
 function draw() {
     background(25);
 
-    projected = [];
-    r = [];
+    /*let projected = [];
     for(let i = 0; i < points.length; i++) {
         let p3 = points[i].matMult(Matrix.rotationY3D(frameCount/100)).matMult(Matrix.rotationX3D(frameCount/230));
-        r.push(p3);
         let p = camera.projectPoint(p3).scale(10).add(new Vector(200,200));
+        projected.push(p);
+    }*/
+
+    let projected = [];
+    for(let i = 0; i < points.length; i++) {
+        let p3 = points[i].matMult(Matrix.rotationY4D(frameCount/100)).matMult(Matrix.rotationW4D(frameCount/100)).matMult(Matrix.rotationX4D(frameCount/100));
+        let p = camera.projectPoint(p3).scale(3).add(new Vector(200,200));
         projected.push(p);
     }
 

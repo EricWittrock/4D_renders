@@ -278,4 +278,38 @@ class Matrix {
         ];
         return m;
     }
+
+    static rotationY4D(angle){
+        let m = new Matrix(4,4);
+        m.data = [
+            [1,0,0,0],
+            [0, Math.cos(angle), Math.sin(angle), 0],
+            [0, -Math.sin(angle), Math.cos(angle), 0],
+            [0,0,0,1]
+        ]
+        return m;
+    }
+
+    static rotationX4D(angle){
+        let m = new Matrix(4,4);
+        m.data = [
+            [Math.cos(angle),-Math.sin(angle),0,0],
+            [Math.sin(angle), Math.cos(angle), 0, 0],
+            [0,1,0,0],
+            [0,0,0,1]
+        ]
+        return m;
+    }
+
+    static rotationW4D(angle){
+        let m = new Matrix(4,4);
+        m.data = [
+            [1,0,0,0],
+            [0,1,0,0],
+            [0,0,Math.cos(angle),-Math.sin(angle)],
+            [0,0,Math.sin(angle), Math.cos(angle)],
+            
+        ]
+        return m;
+    }
 }
