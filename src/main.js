@@ -5,23 +5,42 @@ let points = [];
 function setup() {
     createCanvas(400, 400);
 
-    for(let i = -1; i <= 1; i++) {
+    /*for(let i = -1; i <= 1; i++) { // 3d cube points
         for(let j = -1; j<= 1; j++) {
             for(let k = -1; k<= 1; k++) {
                 if(i*j*k == 0) continue;
                 points.push(new Vector(i,j,k));
             }
         }
+    }*/
+
+    for(let i = -1; i <= 1; i++) { // 4d cube points
+        for(let j = -1; j<= 1; j++) {
+            for(let k = -1; k<= 1; k++) {
+                for(let l = -1; l<= 1; l++) {
+                    if(i*j*k*l == 0) continue;
+                    points.push(new Vector(i,j,k,l));
+                }
+            }
+        }
     }
 }
+
 
 function draw() {
     background(25);
 
+    /*let projected = [];
+    for(let i = 0; i < points.length; i++) {
+        let p3 = points[i].matMult(Matrix.rotationY3D(frameCount/100)).matMult(Matrix.rotationX3D(frameCount/230));
+        let p = camera.projectPoint(p3).scale(10).add(new Vector(200,200));
+        projected.push(p);
+    }*/
+
     let projected = [];
     for(let i = 0; i < points.length; i++) {
-        let p3 = points[i].matMult(Matrix.rotationY3D(frameCount/100)).matMult(Matrix.rotationZ3D(frameCount/230));
-        let p = camera.projectPoint(p3).scale(400).add(new Vector(0,200,200));
+        let p3 = points[i].matMult(Matrix.rotationY4D(frameCount/100)).matMult(Matrix.rotationW4D(frameCount/100)).matMult(Matrix.rotationX4D(frameCount/100));
+        let p = camera.projectPoint(p3).scale(3).add(new Vector(200,200));
         projected.push(p);
     }
 
@@ -38,14 +57,14 @@ function draw() {
             let p3 = points[j];
             if(Vector.dist2(p2, p3) < 4.0001){
 
-                var grad = window.drawingContext.createLinearGradient(p.y, p.z, projected[j].y, projected[j].z);
-                grad.addColorStop(0, heatMap((p.x-3000)/2000));
-                grad.addColorStop(1, heatMap((projected[j].x-3000)/2000));
-                window.drawingContext.strokeStyle = grad;
-                //stroke(255);
+                //var grad = window.drawingContext.createLinearGradient(p.x, p.y, projected[j].x, projected[j].y);
+                //grad.addColorStop(0, heatMap((p.x-3000)/2000));
+                //grad.addColorStop(1, heatMap((projected[j].x-3000)/2000));
+                //window.drawingContext.strokeStyle = grad;
+                stroke(255);
                 strokeWeight(1);
 
-                line(p.y, p.z, projected[j].y, projected[j].z);
+                line(p.x, p.y, projected[j].x, projected[j].y);
             }
         }
     }

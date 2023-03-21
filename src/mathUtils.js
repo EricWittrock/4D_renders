@@ -207,7 +207,7 @@ class Vector {
         return dist;
     }
 
-    static planeIntersect(planeNorm, rayPos, rayNorm) {
+    /*static planeIntersect(planeNorm, rayPos, rayNorm) {
         if(planeNorm.dim !== 3) throw new Error("planeNorm must be a 3D vector");
         if(rayPos.dim !== 3) throw new Error("rayPos must be a 3D vector");
         if(rayNorm.dim !== 3) throw new Error("rayDir must be a 3D vector");
@@ -216,6 +216,13 @@ class Vector {
         let t = planeNorm.dot(planeNorm) / denom;
         return rayPos.add(rayNorm.scale(t));
         
+    }*/
+    
+    static intersectDimension(dim, rayPos, rayDir){
+        if(rayDir.dim != rayPos.dim) throw new Error("dimension of rayPod = "+rayPos.dim+", dimension of rayDir = "+rayDir.dim);
+        if(dim != rayPos.dim) throw new Error("dim should be the last dimension of the ray | dim="+dim+", raydim="+rayPos.dim);
+        let len = rayPos.pos[dim-1]/rayDir.pos[dim-1];
+        return new Vector(rayPos.add(rayDir.scale(len)).pos.slice(0,-1));
     }
 }
 
@@ -269,6 +276,40 @@ class Matrix {
             [Math.sin(angle), Math.cos(angle), 0],
             [0, 0, 1]
         ];
+        return m;
+    }
+
+    static rotationY4D(angle){
+        let m = new Matrix(4,4);
+        m.data = [
+            [1,0,0,0],
+            [0, Math.cos(angle), Math.sin(angle), 0],
+            [0, -Math.sin(angle), Math.cos(angle), 0],
+            [0,0,0,1]
+        ]
+        return m;
+    }
+
+    static rotationX4D(angle){
+        let m = new Matrix(4,4);
+        m.data = [
+            [Math.cos(angle),-Math.sin(angle),0,0],
+            [Math.sin(angle), Math.cos(angle), 0, 0],
+            [0,1,0,0],
+            [0,0,0,1]
+        ]
+        return m;
+    }
+
+    static rotationW4D(angle){
+        let m = new Matrix(4,4);
+        m.data = [
+            [1,0,0,0],
+            [0,1,0,0],
+            [0,0,Math.cos(angle),-Math.sin(angle)],
+            [0,0,Math.sin(angle), Math.cos(angle)],
+            
+        ]
         return m;
     }
 }
